@@ -26,6 +26,11 @@ module.exports = {
 			]
 		}]
 	},
+	target: 'node',	
+	externals:{
+		fs:    "commonjs fs",
+		path:  "commonjs path"
+	},
 	devtool: 'cheap-module-eval-source-map',
 	devServer: {
 		contentBase: path.join(__dirname, 'public')
