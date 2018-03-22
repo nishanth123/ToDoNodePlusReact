@@ -15,7 +15,18 @@ const path = require('path');
 const expressValidator = require('express-validator');
 const mongoose = require('mongoose');
 const Todo = require('./../models/todoModel.js');
+const cors = require('cors');
+
 const app = express();
+
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+};
+
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
+
 var setupController = require('./../controllers/setupController')
 //const url = 'mongodb://localhost:27017/signatures';
 var apiController = require('./../controllers/apiController')

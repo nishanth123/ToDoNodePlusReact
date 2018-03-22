@@ -6,7 +6,7 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true}));
 
-  app.get('/api/todos/:uname', function(req, res){
+  app.get('/api/todos-name/:uname', function(req, res){
 
     Todos.find({ username: req.params.uname },
     function(err, todos) {
@@ -16,19 +16,15 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/api/todo/:id', function(req, res){
-
-    Todos.findById({ _id: req.params.id }, function(err, todo) {
+  app.get('/api/todos/:id', function(req, res){
+    Todos.findById({ _id: req.params.id }, function(err, todos) {
       if (err) throw err;
-
-      res.send(todo);
+      res.send(todos);
     });
 
   });
 
-  app.post('/api/todo', function(req, res){
-
-    console.log(req.body);
+  app.post('/api/todos', function(req, res){
 
     if (req.body._id){
       Todos.findByIdAndUpdate(req.body._id, {
@@ -45,7 +41,7 @@ module.exports = function(app) {
     else 
     {
       var newTodo = Todos({
-        username: 'test',
+        username: req.body.username,
         todo: req.body.todo,
         isDone: req.body.isDone,
         hasAttachment: req.body.hasAttachment
@@ -57,10 +53,24 @@ module.exports = function(app) {
     }
   });
 
-  app.delete('/api/todo', function(req,res) {
-    Todos.findByIdAndRemove(req.body._id, function(err) {
+  // app.delete('/api/todos', function(req,res) {
+  //   Todos.findByIdAndRemove(req.body._id, function(err) {
+  //     if (err) throw err;
+  //     res.send('Successfully removed');
+  //   });
+  // });
+
+  app.delete('/api/todos/:id', function(req,res) {
+    
+    Todos.findByIdAndRemove({ _id: req.params.id }, function(err, todo) {
       if (err) throw err;
-      res.send('Successfully removed');
+
+      res.send('Success');
     });
+    
+    // Todos.findByIdAndRemove(req.body._id, function(err) {
+    //   if (err) throw err;
+    //   res.send('Successfully removed');
+    // });
   });
 }
